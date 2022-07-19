@@ -4,14 +4,12 @@ services:
   plex:
     container_name: plex
     image: plexinc/pms-docker
-    ports:
-      - "32400:32400"
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Buenos_Aires
       - UMASK=000
-      - PLEX_CLAIM=claim-zaXzBKyEwtcYr811vwtR
     volumes:
       - /docker/appdata/plex:/config
       - /data/media:/data/media
@@ -27,7 +25,7 @@ services:
       - UMASK=000
     volumes:
       - /docker/appdata/radarr:/config
-      - /data:/data
+      - /data/media:/data/media
   sonarr:
     container_name: sonarr
     image: cr.hotio.dev/hotio/sonarr
@@ -40,6 +38,7 @@ services:
       - UMASK=000
     volumes:
       - /docker/appdata/sonarr:/config
+      - /data/media:/data/media
   bazarr:
     container_name: bazarr
     image: cr.hotio.dev/hotio/bazarr
@@ -52,6 +51,7 @@ services:
       - UMASK=000
     volumes:
       - /docker/appdata/bazarr:/config
+      - /data/media:/data/media
   jackett:
     container_name: jackett
     image: cr.hotio.dev/hotio/jackett
@@ -64,7 +64,7 @@ services:
       - UMASK=000
     volumes:
       - /docker/appdata/jackett:/config
-      - /data/jackett:/data/jackett
+      - /data/media:/data/media
   qbittorrent:
     container_name: qbittorrent
     image: cr.hotio.dev/hotio/qbittorrent
@@ -77,4 +77,30 @@ services:
       - UMASK=000
     volumes:
       - /docker/appdata/qbittorrent:/config
-      - /app/qBittorrent/downloads:/data/torrents
+      - /data/media/sdb/torrents:/data/media/torrents
+  sonarr-anime:
+    container_name: sonarr-anime
+    image: cr.hotio.dev/hotio/sonarr
+    ports:
+      - 8888:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/sonarr-anime:/config
+      - /data/media:/data/media
+  radarr-4k:
+    container_name: radarr-4k
+    image: cr.hotio.dev/hotio/radarr
+    ports:
+      - 7777:7878
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/radarr-4k:/config
+      - /data/media:/data/media
