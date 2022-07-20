@@ -5,6 +5,8 @@ services:
     container_name: plex
     image: plexinc/pms-docker
     network_mode: host
+    devices:
+      - /dev/dri:/dev/dri
     environment:
       - PUID=1000
       - PGID=1000
